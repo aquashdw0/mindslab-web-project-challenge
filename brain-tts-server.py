@@ -16,7 +16,7 @@ class stt_sock():
             print("Starting TTS server on {host}:{port}".format(host=self.host, port=self.port))
             self.socket.bind((self.host, self.port))
             print("TTS Server started on port {port}.".format(port=self.port))
-        except Exception
+        except Exception:
             print("Error: Could not bind to port {port}".format(port=self.port))
             self.shutdown()
             sys.exit(-1)
