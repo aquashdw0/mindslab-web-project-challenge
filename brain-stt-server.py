@@ -15,7 +15,7 @@ class stt_sock():
             print("Starting STT server on {host}:{port}".format(host=self.host, port=self.port))
             self.socket.bind((self.host, self.port))
             print("STT Server started on port {port}.".format(port=self.port))
-        except Exception as e:
+        except Exception:
             print("Error: Could not bind to port {port}".format(port=self.port))
             self.shutdown()
             sys.exit(-1)
@@ -27,21 +27,16 @@ class stt_sock():
             (conn, address) = self.socket.accept()
             conn.settimeout(60)
             print("Recieved connection from {addr}".format(addr=address))
-            req = b""
-            while True:
-                data = conn.recv(4096)
-                print(data)
-                if not data:
-                    break
-                req += data
+            data = conn.recv(4096)
 
             succ_ = verify(data)
+            print(succ_)
             if not succ_:
                 send_ = json.dumps({"success": True})
-                conn.send(send_)
+                conn.send(str.encode(send_))
             else:
                 send_ = json.dumps({"success": False})
-                conn.send(send_)
+                conn.send(str.encode(send_))
 
     def shutdown(self):
         self.socket.shutdown(socket.SHUT_RDWR)
