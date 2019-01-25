@@ -27,15 +27,21 @@ class stt_sock():
             (conn, address) = self.socket.accept()
             conn.settimeout(60)
             print("Recieved connection from {addr}".format(addr=address))
-            data = ""
+            req = b""
             while True:
                 data = conn.recv(4096)
+                print(data)
+                if not data:
+                    break
+                req += data
 
             succ_ = verify(data)
             if not succ_:
-                conn.send(b"cannot process STT")
+                send_ = json.dumps({"success": True})
+                conn.send(send_)
             else:
-                conn.send(b"STT success")
+                send_ = json.dumps({"success": False})
+                conn.send(send_)
 
     def shutdown(self):
         self.socket.shutdown(socket.SHUT_RDWR)

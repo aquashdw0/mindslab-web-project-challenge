@@ -36,13 +36,13 @@ class stt_sock():
                     break
                 req += data
 
-            succ_ = verify(req)
-            print(succ_)
+            succ_ = verify(data)
             if not succ_:
-                conn.send(b'{"result":"success"}')
+                send_ = json.dumps({"success": True})
+                conn.send(send_)
             else:
-                conn.send(b'{"result":"fail"}')
-            conn.close()
+                send_ = json.dumps({"success": False})
+                conn.send(send_)
 
     def shutdown(self):
         self.socket.shutdown(socket.SHUT_RDWR)
