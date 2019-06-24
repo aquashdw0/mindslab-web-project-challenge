@@ -31,7 +31,7 @@ class stt_sock():
 
             succ_ = verify(data)
             print(succ_)
-            if not succ_:
+            if succ_:
                 send_ = json.dumps({"success": True})
                 conn.send(str.encode(send_))
             else:
